@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spotify/screens/pantalla_principal.dart';
-import 'screens/pantalla_inicio.dart';
+import 'screens/Pantalla_Inicio.dart';
 
 void main() {
   runApp(const MyApp());

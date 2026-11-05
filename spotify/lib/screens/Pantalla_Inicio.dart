@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'pantalla_principal.dart';
+import 'Pantalla_Login.dart';
 
 class PantallaInicio extends StatefulWidget {
   const PantallaInicio({super.key});
@@ -27,12 +27,12 @@ class _PantallaInicioState extends State<PantallaInicio> {
     setState(() => _opacidad = 0);
   }
 
-  void _abrirPrincipal() {
+  void _abrirLogin() {
     if (!mounted) return;
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => const PantallaPrincipal(),
+        builder: (_) => const PantallaLogin(),
       ),
     );
   }
@@ -45,7 +45,7 @@ class _PantallaInicioState extends State<PantallaInicio> {
         child: AnimatedOpacity(
           opacity: _opacidad,
           duration: const Duration(milliseconds: 800),
-          onEnd: _abrirPrincipal,
+          onEnd: _abrirLogin,
           child: const FaIcon(
             FontAwesomeIcons.spotify,
             color: Color(0xFF1DB954),
