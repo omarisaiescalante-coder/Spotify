@@ -13,6 +13,7 @@ class PantallaBuscar extends StatefulWidget {
 }
 
 class _PantallaBuscarState extends State<PantallaBuscar> {
+  bool _menuCrearAbierto = false;
   final TextEditingController _controladorBusqueda = TextEditingController();
 
   final List<_Categoria> _categorias = const [
@@ -277,21 +278,32 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
             );
           } else if (indice == 3) {
             // ABRIR MENÚ CREAR DE SPOTIFY
-            mostrarMenuCrear(context);
+            mostrarMenuCrear(context, (abierto) {
+              setState(() => _menuCrearAbierto = abierto);
+            });
           }
         },
 
-        items: const [
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
             label: 'Inicio',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Buscar'),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Buscar',
+          ),
+          const BottomNavigationBarItem(
             icon: Icon(Icons.library_music_outlined),
             label: 'Tu biblioteca',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Más'),
+          BottomNavigationBarItem(
+            icon: Opacity(
+              opacity: _menuCrearAbierto ? 0 : 1,
+              child: const Icon(Icons.add),
+            ),
+            label: _menuCrearAbierto ? '' : 'Más',
+          ),
         ],
       ),
     );
