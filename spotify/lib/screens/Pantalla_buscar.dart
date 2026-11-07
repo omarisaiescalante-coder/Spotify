@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'Pantalla_Biblioteca.dart';
 import 'Pantalla_Principal.dart';
 
 class PantallaBuscar extends StatefulWidget {
@@ -269,6 +270,10 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
           if (indice == 0) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const PantallaPrincipal()),
+            );
+          } else if (indice == 2) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const PantallaBiblioteca()),
             );
           }
         },
