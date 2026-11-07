@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:spotify/screens/pantalla_crear.dart';
 
 import 'Pantalla_Biblioteca.dart';
 import 'Pantalla_buscar.dart';
+import 'pantalla_Crear.dart' hide mostrarMenuCrear;
 import 'menu_perfil.dart';
 
 const _fondo = Color(0xFF121212);
@@ -69,6 +70,7 @@ enum _Filtro {
   audiolibros('Audiolibros');
 
   const _Filtro(this.nombre);
+
   final String nombre;
 }
 
@@ -85,6 +87,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
   @override
   Widget build(BuildContext context) {
     final ancho = MediaQuery.sizeOf(context).width;
+
     final anchoTarjeta = (ancho * 0.4).clamp(112.0, 200.0).toDouble();
 
     return Theme(
@@ -94,6 +97,8 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
         backgroundColor: _fondo,
         drawerScrimColor: sombraMenuPerfil,
         drawer: const MenuPerfil(),
+
+        // BARRA SUPERIOR
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: _fondo,
@@ -115,7 +120,9 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                           child: ChoiceChip(
                             label: Text(filtro.nombre),
                             selected: _filtro == filtro,
-                            onSelected: (_) => setState(() => _filtro = filtro),
+                            onSelected: (_) {
+                              setState(() => _filtro = filtro);
+                            },
                             showCheckmark: false,
                             backgroundColor: const Color(0xFF303030),
                             selectedColor: _verde,
@@ -139,6 +146,8 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
             ],
           ),
         ),
+
+        // CONTENIDO PRINCIPAL
         body: switch (_filtro) {
           _Filtro.todas || _Filtro.musica => ListView(
             padding: const EdgeInsets.only(top: 16, bottom: 88),
@@ -161,6 +170,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
               ),
             ],
           ),
+
           _Filtro.podcasts || _Filtro.audiolibros => Center(
             child: Text(
               'Aún no hay ${_filtro.nombre.toLowerCase()} disponibles.',
@@ -168,6 +178,8 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
             ),
           ),
         },
+
+        // BARRA DE NAVEGACION INFERIOR
         bottomNavigationBar: DecoratedBox(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -186,20 +198,35 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
             selectedFontSize: 11,
             unselectedFontSize: 11,
             iconSize: 26,
+
+            // FUNCIONAMIENTO DE LOS BOTONES
             onTap: (indice) {
               switch (indice) {
+                case 0:
+                  // Ya estamos en Inicio.
+                  break;
+
                 case 1:
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => const PantallaBuscar()),
                   );
+                  break;
+
                 case 2:
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (_) => const PantallaBiblioteca(),
                     ),
                   );
+                  break;
+
+                case 3:
+                  // NUEVA FUNCIONALIDAD: CREAR
+                  mostrarMenuCrear(context);
+                  break;
               }
             },
+
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_filled),
@@ -213,9 +240,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                 icon: Icon(Icons.library_music_outlined),
                 label: 'Tu biblioteca',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                    label: 'Crear'),
+              BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Crear'),
             ],
           ),
         ),
@@ -224,6 +249,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
   }
 }
 
+// CARRUSEL DE MUSICA
 class _Carrusel extends StatelessWidget {
   const _Carrusel({
     required this.titulo,
@@ -241,6 +267,7 @@ class _Carrusel extends StatelessWidget {
   Widget build(BuildContext context) {
     final escala = MediaQuery.textScalerOf(context);
     final altoTexto = escala.scale(14) * (mostrarTitulo ? 6 : 3);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 26),
       child: Column(
@@ -262,6 +289,7 @@ class _Carrusel extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(width: 16),
               itemBuilder: (context, indice) {
                 final tarjeta = tarjetas[indice];
+
                 return SizedBox(
                   width: ancho,
                   child: Material(
@@ -286,6 +314,7 @@ class _Carrusel extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 10),
+
                           if (mostrarTitulo) ...[
                             const Text(
                               'Álbum',
@@ -303,6 +332,7 @@ class _Carrusel extends StatelessWidget {
                               ),
                             ),
                           ],
+
                           Text(
                             tarjeta.descripcion,
                             maxLines: 2,

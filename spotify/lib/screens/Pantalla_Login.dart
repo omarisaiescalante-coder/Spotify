@@ -44,8 +44,11 @@ class _PantallaLoginState extends State<PantallaLogin> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const Center(
-                          child: FaIcon(FontAwesomeIcons.spotify,
-                              color: verde, size: 64),
+                          child: FaIcon(
+                            FontAwesomeIcons.spotify,
+                            color: verde,
+                            size: 64,
+                          ),
                         ),
                         const SizedBox(height: 24),
                         const Text(
@@ -84,9 +87,11 @@ class _PantallaLoginState extends State<PantallaLogin> {
                               tooltip: _ocultarClave
                                   ? 'Mostrar contraseña'
                                   : 'Ocultar contraseña',
-                              icon: Icon(_ocultarClave
-                                  ? Icons.visibility
-                                  : Icons.visibility_off),
+                              icon: Icon(
+                                _ocultarClave
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
                               onPressed: () => setState(
                                 () => _ocultarClave = !_ocultarClave,
                               ),

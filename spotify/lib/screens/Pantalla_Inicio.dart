@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'Pantalla_Login.dart';
 
 class PantallaInicio extends StatefulWidget {
@@ -30,11 +31,9 @@ class _PantallaInicioState extends State<PantallaInicio> {
   void _abrirLogin() {
     if (!mounted) return;
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => const PantallaLogin(),
-      ),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const PantallaLogin()));
   }
 
   @override
