@@ -20,13 +20,15 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
       icono: Icons.favorite,
       colorFondo: Colors.deepPurple,
       esCircular: false,
+      imagen: null,
     ),
     (
-      titulo: 'Nadie',
+      titulo: 'Barak',
       subtitulo: 'Artista',
       icono: Icons.person,
       colorFondo: Colors.grey,
       esCircular: true,
+      imagen: 'assets/images/Barak.jpg',
     ),
     (
       titulo: 'Rock Clásico 80s',
@@ -34,6 +36,7 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
       icono: Icons.music_note,
       colorFondo: Colors.blueGrey,
       esCircular: false,
+      imagen: 'assets/images/rockclasico.jpg',
     ),
     (
       titulo: 'Sebastian Yatra',
@@ -41,6 +44,7 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
       icono: Icons.person,
       colorFondo: Color.fromARGB(255, 21, 111, 33),
       esCircular: true,
+      imagen: 'assets/images/1900x1900-000000-80-0-0.jpg',
     ),
     (
       titulo: 'Las mas escuchadas 2023',
@@ -48,6 +52,23 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
       icono: Icons.headset,
       colorFondo: Color.fromARGB(255, 3, 111, 253),
       esCircular: false,
+      imagen: null,
+    ),
+    (
+      titulo: 'Tu Top de canciones 2026',
+      subtitulo: 'Playlist • 102 canciones',
+      icono: Icons.headset,
+      colorFondo: Color.fromARGB(255, 3, 111, 253),
+      esCircular: true,
+      imagen: 'assets/images/topcanciones2026.jpeg',
+    ),
+    (
+      titulo: 'GYM/ALEGRIA/SUDOR',
+      subtitulo: 'Playlist • Creado por Loany',
+      icono: Icons.headset,
+      colorFondo: Color.fromARGB(255, 3, 111, 253),
+      esCircular: true,
+      imagen: 'assets/images/GYM.jpeg',
     ),
   ];
 
@@ -178,6 +199,7 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
                           icono: elemento.icono,
                           colorFondo: elemento.colorFondo,
                           esCircular: elemento.esCircular,
+                          imagen: elemento.imagen,
                         ),
                     ],
                   ),
@@ -248,17 +270,21 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
     required IconData icono,
     required Color colorFondo,
     required bool esCircular,
+    String? imagen,
   }) {
     return ListTile(
       leading: Container(
         width: 50,
         height: 50,
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: colorFondo,
           shape: esCircular ? BoxShape.circle : BoxShape.rectangle,
           borderRadius: esCircular ? null : BorderRadius.circular(4),
         ),
-        child: Icon(icono, color: Colors.white),
+        child: imagen == null
+            ? Icon(icono, color: Colors.white)
+            : Image.asset(imagen, fit: BoxFit.cover),
       ),
       title: Text(
         titulo,
