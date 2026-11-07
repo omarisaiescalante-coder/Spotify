@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:spotify/screens/pantalla_crear.dart';
 
 import 'Pantalla_Biblioteca.dart';
 import 'Pantalla_buscar.dart';
-import 'pantalla_Crear.dart' hide mostrarMenuCrear;
 import 'menu_perfil.dart';
+import 'pantalla_crear.dart';
 
 const _fondo = Color(0xFF121212);
 const _verde = Color(0xFF1ED760);
@@ -82,6 +81,7 @@ class PantallaPrincipal extends StatefulWidget {
 }
 
 class _PantallaPrincipalState extends State<PantallaPrincipal> {
+  bool _menuCrearAbierto = false;
   _Filtro _filtro = _Filtro.todas;
 
   @override
@@ -222,25 +222,33 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
 
                 case 3:
                   // NUEVA FUNCIONALIDAD: CREAR
-                  mostrarMenuCrear(context);
+                  mostrarMenuCrear(context, (abierto) {
+                    setState(() => _menuCrearAbierto = abierto);
+                  });
                   break;
               }
             },
 
-            items: const [
-              BottomNavigationBarItem(
+            items: [
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.home_filled),
                 label: 'Inicio',
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.search),
                 label: 'Buscar',
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.library_music_outlined),
                 label: 'Tu biblioteca',
               ),
-              BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Crear'),
+              BottomNavigationBarItem(
+                icon: Opacity(
+                  opacity: _menuCrearAbierto ? 0 : 1,
+                  child: const Icon(Icons.add),
+                ),
+                label: _menuCrearAbierto ? '' : 'Crear',
+              ),
             ],
           ),
         ),

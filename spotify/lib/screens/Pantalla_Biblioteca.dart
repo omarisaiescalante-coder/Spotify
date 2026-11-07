@@ -13,6 +13,7 @@ class PantallaBiblioteca extends StatefulWidget {
 }
 
 class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
+  bool _menuCrearAbierto = false;
   static const _elementos = [
     (
       titulo: 'Tus canciones que te gustan',
@@ -202,21 +203,32 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
             );
           } else if (indice == 3) {
             // ABRIR MENÚ CREAR DE SPOTIFY
-            mostrarMenuCrear(context);
+            mostrarMenuCrear(context, (abierto) {
+              setState(() => _menuCrearAbierto = abierto);
+            });
           }
         },
 
-        items: const [
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
             label: 'Inicio',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Buscar'),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Buscar',
+          ),
+          const BottomNavigationBarItem(
             icon: Icon(Icons.library_music_outlined),
             label: 'Tu biblioteca',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Más'),
+          BottomNavigationBarItem(
+            icon: Opacity(
+              opacity: _menuCrearAbierto ? 0 : 1,
+              child: const Icon(Icons.add),
+            ),
+            label: _menuCrearAbierto ? '' : 'Más',
+          ),
         ],
       ),
     );
