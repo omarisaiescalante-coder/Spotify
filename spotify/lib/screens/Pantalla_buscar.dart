@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'Pantalla_Biblioteca.dart';
 import 'Pantalla_Principal.dart';
+import 'menu_perfil.dart';
+import 'pantalla_crear.dart';
 
 class PantallaBuscar extends StatefulWidget {
   const PantallaBuscar({super.key});
@@ -19,15 +22,60 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
       Icons.music_note,
       imagen: 'assets/images/mujer_mariposa.png',
     ),
-    _Categoria('Podcasts', Color(0xFF006450), Icons.mic),
-    _Categoria('Audiolibros', Color(0xFF1E3264), Icons.auto_stories),
-    _Categoria('Eventos en vivo', Color(0xFF8400E7), Icons.podcasts),
-    _Categoria('Creado para ti', Color(0xFF8D67AB), Icons.favorite),
-    _Categoria('Próximos lanzamientos', Color(0xFF007F5F), Icons.schedule),
-    _Categoria('Nuevos lanzamientos', Color(0xFF608108), Icons.new_releases),
-    _Categoria('Spotify Sessions', Color(0xFFE11178), Icons.headphones),
-    _Categoria('Pop', Color(0xFF477D95), Icons.album),
-    _Categoria('Rock', Color(0xFFBA5D07), Icons.electric_bolt),
+    _Categoria(
+      'Bienestar',
+      Color(0xFF006450),
+      Icons.mic,
+      imagen: 'assets/images/dias_contigo.jpg',
+    ),
+    _Categoria(
+      'Worship',
+      Color(0xFF1E3264),
+      Icons.auto_stories,
+      imagen: 'assets/images/kintsugi.jpg',
+    ),
+    _Categoria(
+      'Creado\npara ti',
+      Color(0xFF8400E7),
+      Icons.podcasts,
+      imagen: 'assets/images/morning_glory.jpg',
+    ),
+    _Categoria(
+      'Classic\nRock',
+      Color(0xFF8D67AB),
+      Icons.favorite,
+      imagen: 'assets/images/abbey_road.jpg',
+    ),
+    _Categoria(
+      'Pop Rock',
+      Color(0xFF007F5F),
+      Icons.schedule,
+      imagen: 'assets/images/reckless.webp',
+    ),
+    _Categoria(
+      'Pop/Soul',
+      Color(0xFF608108),
+      Icons.new_releases,
+      imagen: 'assets/images/adele_21.jpg',
+    ),
+    _Categoria(
+      'Pop',
+      Color(0xFFE11178),
+      Icons.headphones,
+      imagen: 'assets/images/thriller.jpg',
+    ),
+    _Categoria(
+      'Prog Rock',
+      Color(0xFF477D95),
+      Icons.album,
+      imagen: 'assets/images/dark_side_of_the_moon.jpg',
+    ),
+    _Categoria(
+      'Classical\nCrossover',
+      Color(0xFFBA5D07),
+      Icons.electric_bolt,
+      imagen: 'assets/images/dimash_id.jpg',
+    ),
   ];
 
   List<_Categoria> get _categoriasFiltradas {
@@ -47,22 +95,19 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawerScrimColor: sombraMenuPerfil,
+      drawer: const MenuPerfil(),
       backgroundColor: Color.fromARGB(255, 25, 20, 20),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 25, 20, 20),
         foregroundColor: Colors.white,
         elevation: 0,
-        titleSpacing: 20,
+        titleSpacing: 14,
         title: const Row(
           children: [
-            CircleAvatar(
-              radius: 18,
-              backgroundColor: Color.fromARGB(255, 30, 255, 108),
-              foregroundColor: Colors.black,
-              child: Text('I', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            SizedBox(width: 14),
+            BotonPerfil(),
+            SizedBox(width: 8),
             Text(
               'Buscar',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -144,7 +189,7 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 14,
                   mainAxisSpacing: 14,
-                  childAspectRatio: 3.0, //tamaño de las tarjetas (ancho/alto)
+                  childAspectRatio: 1.5, //tamaño de las tarjetas (ancho/alto)
                 ),
                 itemBuilder: (context, indice) {
                   final categoria = _categoriasFiltradas[indice];
@@ -166,20 +211,20 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize:
-                                    30, //tamaño de las letras de las categorías
+                                    20, //tamaño de las letras de las categorías
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                           if (categoria.imagen != null)
                             Positioned(
-                              right: -18, //
-                              bottom: -60, //posición de la imagen
+                              right: -10, //
+                              bottom: -30, //posición de la imagen
                               child: Transform.rotate(
-                                angle: 0.50, //ángulo
+                                angle: 0.60, //ángulo
                                 child: SizedBox(
-                                  width: 250, //tamaño de la imagen
-                                  height: 250, //tamaño de la imagen
+                                  width: 115, //tamaño de la imagen
+                                  height: 115, //tamaño de la imagen
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(
                                       12,
@@ -220,13 +265,22 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
         currentIndex: 1,
+
         onTap: (indice) {
           if (indice == 0) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const PantallaPrincipal()),
             );
+          } else if (indice == 2) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const PantallaBiblioteca()),
+            );
+          } else if (indice == 3) {
+            // ABRIR MENÚ CREAR DE SPOTIFY
+            mostrarMenuCrear(context);
           }
         },
+
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
