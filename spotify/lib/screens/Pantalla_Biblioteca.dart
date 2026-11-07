@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'Pantalla_buscar.dart';
 import 'Pantalla_Principal.dart';
 import 'menu_perfil.dart';
+import 'pantalla_crear.dart';
 
 class PantallaBiblioteca extends StatefulWidget {
   const PantallaBiblioteca({super.key});
@@ -189,6 +190,7 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
         currentIndex: 2,
+
         onTap: (indice) {
           if (indice == 0) {
             Navigator.of(context).pushReplacement(
@@ -198,8 +200,12 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const PantallaBuscar()),
             );
+          } else if (indice == 3) {
+            // ABRIR MENÚ CREAR DE SPOTIFY
+            mostrarMenuCrear(context);
           }
         },
+
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
