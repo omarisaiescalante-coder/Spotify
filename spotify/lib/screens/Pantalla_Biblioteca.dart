@@ -2,43 +2,122 @@ import 'package:flutter/material.dart';
 
 import 'Pantalla_buscar.dart';
 import 'Pantalla_Principal.dart';
+import 'menu_perfil.dart';
 
-class PantallaBiblioteca extends StatelessWidget {
+class PantallaBiblioteca extends StatefulWidget {
   const PantallaBiblioteca({super.key});
 
   @override
+  State<PantallaBiblioteca> createState() => _PantallaBibliotecaState();
+}
+
+class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
+  static const _elementos = [
+    (
+      titulo: 'Tus canciones que te gustan',
+      subtitulo: 'Playlist • 142 canciones',
+      icono: Icons.favorite,
+      colorFondo: Colors.deepPurple,
+      esCircular: false,
+    ),
+    (
+      titulo: 'Nadie',
+      subtitulo: 'Artista',
+      icono: Icons.person,
+      colorFondo: Colors.grey,
+      esCircular: true,
+    ),
+    (
+      titulo: 'Rock Clásico 80s',
+      subtitulo: 'Playlist • Tu usuario',
+      icono: Icons.music_note,
+      colorFondo: Colors.blueGrey,
+      esCircular: false,
+    ),
+    (
+      titulo: 'Sebastian Yatra',
+      subtitulo: 'Artista',
+      icono: Icons.person,
+      colorFondo: Color.fromARGB(255, 21, 111, 33),
+      esCircular: true,
+    ),
+    (
+      titulo: 'Las mas escuchadas 2023',
+      subtitulo: 'Playlist • 94 canciones',
+      icono: Icons.headset,
+      colorFondo: Color.fromARGB(255, 3, 111, 253),
+      esCircular: false,
+    ),
+  ];
+
+  bool _buscando = false;
+  String _consulta = '';
+
+  static String _normalizar(String texto) {
+    return texto.toLowerCase().replaceAllMapped(
+      RegExp('[áéíóúü]'),
+      (letra) => 'aeiouu'['áéíóúü'.indexOf(letra[0]!)],
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final consulta = _normalizar(_consulta.trim());
+    final resultados = _elementos.where(
+      (elemento) =>
+          _normalizar(elemento.titulo).contains(consulta) ||
+          _normalizar(elemento.subtitulo).contains(consulta),
+    );
+
     return Scaffold(
+      drawerScrimColor: sombraMenuPerfil,
+      drawer: const MenuPerfil(),
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         backgroundColor: const Color(0xFF121212),
         elevation: 0,
-        leading: const Padding(
-          padding: EdgeInsets.all(9.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.pinkAccent,
-            child: Text('U', style: TextStyle(color: Colors.white)),
-          ),
-        ),
-        title: const Text(
-          'Tu biblioteca',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
+        leading: const BotonPerfil(),
+        title: _buscando
+            ? TextField(
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                textInputAction: TextInputAction.search,
+                decoration: const InputDecoration(
+                  hintText: 'Buscar en tu biblioteca',
+                  hintStyle: TextStyle(color: Colors.white70),
+                  border: InputBorder.none,
+                ),
+                onChanged: (valor) => setState(() => _consulta = valor),
+              )
+            : const Text(
+                'Tu biblioteca',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {},
+            tooltip: _buscando ? 'Cerrar búsqueda' : 'Buscar en tu biblioteca',
+            icon: Icon(
+              _buscando ? Icons.close : Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: () => setState(() {
+              _buscando = !_buscando;
+              _consulta = '';
+            }),
           ),
           IconButton(
-            icon: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ), //si quiero cambiar el icono cambio el nombre de Add
-            onPressed: () {},
+            tooltip: 'Crear',
+            icon: const Icon(Icons.add, color: Colors.white),
+            onPressed: () {
+              ScaffoldMessenger.of(context)
+                ..removeCurrentSnackBar()
+                ..showSnackBar(const SnackBar(content: Text('Creas')));
+            },
           ),
         ],
       ),
@@ -80,45 +159,27 @@ class PantallaBiblioteca extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView(
-              children: [
-                _crearElementoLista(
-                  titulo: 'Tus canciones que te gustan',
-                  subtitulo: 'Playlist • 142 canciones',
-                  icono: Icons.favorite,
-                  colorFondo: Colors.deepPurple,
-                  esCircular: false,
-                ),
-                _crearElementoLista(
-                  titulo: 'Bad Bunny',
-                  subtitulo: 'Artista',
-                  icono: Icons.person,
-                  colorFondo: Colors.grey,
-                  esCircular: true,
-                ),
-                _crearElementoLista(
-                  titulo: 'Rock Clásico 80s',
-                  subtitulo: 'Playlist • Tu usuario',
-                  icono: Icons.music_note,
-                  colorFondo: Colors.blueGrey,
-                  esCircular: false,
-                ),
-                _crearElementoLista(
-                  titulo: 'Sebastian Yatra',
-                  subtitulo: 'Artista',
-                  icono: Icons.person,
-                  colorFondo: const Color.fromARGB(255, 21, 111, 33),
-                  esCircular: true,
-                ),
-                _crearElementoLista(
-                  titulo: 'Las mas escuchadas 2023',
-                  subtitulo: 'Playlist • 94 canciones',
-                  icono: Icons.headset,
-                  colorFondo: const Color.fromARGB(255, 3, 111, 253),
-                  esCircular: false,
-                ),
-              ],
-            ),
+            child: resultados.isEmpty
+                ? const Center(
+                    child: Text(
+                      'No hay resultados',
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                  )
+                : ListView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    children: [
+                      for (final elemento in resultados)
+                        _crearElementoLista(
+                          titulo: elemento.titulo,
+                          subtitulo: elemento.subtitulo,
+                          icono: elemento.icono,
+                          colorFondo: elemento.colorFondo,
+                          esCircular: elemento.esCircular,
+                        ),
+                    ],
+                  ),
           ),
         ],
       ),

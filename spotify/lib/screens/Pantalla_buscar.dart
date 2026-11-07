@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'Pantalla_Biblioteca.dart';
 import 'Pantalla_Principal.dart';
+import 'menu_perfil.dart';
 
 class PantallaBuscar extends StatefulWidget {
   const PantallaBuscar({super.key});
@@ -93,22 +94,19 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawerScrimColor: sombraMenuPerfil,
+      drawer: const MenuPerfil(),
       backgroundColor: Color.fromARGB(255, 25, 20, 20),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 25, 20, 20),
         foregroundColor: Colors.white,
         elevation: 0,
-        titleSpacing: 20,
+        titleSpacing: 14,
         title: const Row(
           children: [
-            CircleAvatar(
-              radius: 18,
-              backgroundColor: Color.fromARGB(255, 30, 255, 108),
-              foregroundColor: Colors.black,
-              child: Text('I', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            SizedBox(width: 14),
+            BotonPerfil(),
+            SizedBox(width: 8),
             Text(
               'Buscar',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
