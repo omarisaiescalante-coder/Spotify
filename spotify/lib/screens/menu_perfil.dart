@@ -3,8 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:spotify/screens/Pantalla_Inicio.dart';
 
-import 'Pantalla_Login.dart';
-
 const nombrePerfil = 'Omar Escalante';
 const sombraMenuPerfil = Color(0xB8000000);
 const _fondo = Color(0xFF121212);
