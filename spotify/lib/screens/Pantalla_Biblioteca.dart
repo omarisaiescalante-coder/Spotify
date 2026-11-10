@@ -19,9 +19,17 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
       titulo: 'Tus canciones que te gustan',
       subtitulo: 'Playlist • 142 canciones',
       icono: Icons.favorite,
-      colorFondo: Colors.deepPurple,
+      colorFondo: Color.fromARGB(255, 234, 6, 150),
       esCircular: false,
       imagen: null,
+    ),
+    (
+      titulo: 'Aitana',
+      subtitulo: 'Artista',
+      icono: Icons.person,
+      colorFondo: Color.fromARGB(255, 21, 111, 33),
+      esCircular: true,
+      imagen: 'assets/images/aitana.jpeg',
     ),
     (
       titulo: 'Barak',
@@ -32,12 +40,12 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
       imagen: 'assets/images/Barak.jpg',
     ),
     (
-      titulo: 'Rock Clásico 80s',
-      subtitulo: 'Playlist • Tu usuario',
-      icono: Icons.music_note,
-      colorFondo: Colors.blueGrey,
+      titulo: 'Verano',
+      subtitulo: 'Playlist • Rauw Alejandra, maluma, sabastian yatra',
+      icono: Icons.headset,
+      colorFondo: Color.fromARGB(255, 3, 111, 253),
       esCircular: false,
-      imagen: 'assets/images/rockclasico.jpg',
+      imagen: 'assets/images/verano.jpeg',
     ),
     (
       titulo: 'Sebastian Yatra',
@@ -48,14 +56,6 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
       imagen: 'assets/images/1900x1900-000000-80-0-0.jpg',
     ),
     (
-      titulo: 'Las mas escuchadas 2023',
-      subtitulo: 'Playlist • 94 canciones',
-      icono: Icons.headset,
-      colorFondo: Color.fromARGB(255, 3, 111, 253),
-      esCircular: false,
-      imagen: null,
-    ),
-    (
       titulo: 'Tu Top de canciones 2026',
       subtitulo: 'Playlist • 102 canciones',
       icono: Icons.headset,
@@ -64,12 +64,36 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
       imagen: 'assets/images/topcanciones2026.jpeg',
     ),
     (
+      titulo: 'Las mas escuchadas 2023',
+      subtitulo: 'Playlist • 94 canciones',
+      icono: Icons.headset,
+      colorFondo: Color.fromARGB(255, 3, 111, 253),
+      esCircular: false,
+      imagen: null,
+    ),
+    (
       titulo: 'GYM/ALEGRIA/SUDOR',
       subtitulo: 'Playlist • Creado por Loany',
       icono: Icons.headset,
       colorFondo: Color.fromARGB(255, 3, 111, 253),
       esCircular: true,
       imagen: 'assets/images/GYM.jpeg',
+    ),
+    (
+      titulo: 'WORSHIP EN ESPAÑOL 2024',
+      subtitulo: 'Playlist • Mich.Mazua',
+      icono: Icons.headset,
+      colorFondo: Color.fromARGB(255, 3, 111, 253),
+      esCircular: false,
+      imagen: 'assets/images/worship.jpeg',
+    ),
+    (
+      titulo: 'Rock Clásico 80s',
+      subtitulo: 'Playlist • Tu usuario',
+      icono: Icons.music_note,
+      colorFondo: Colors.blueGrey,
+      esCircular: false,
+      imagen: 'assets/images/rockclasico.jpg',
     ),
   ];
 
@@ -201,6 +225,10 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
                           colorFondo: elemento.colorFondo,
                           esCircular: elemento.esCircular,
                           imagen: elemento.imagen,
+                          fijada:
+                              elemento.titulo ==
+                                  'Tus canciones que te gustan' ||
+                              elemento.titulo == 'Aitana',
                         ),
                     ],
                   ),
@@ -283,11 +311,12 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
     required Color colorFondo,
     required bool esCircular,
     String? imagen,
+    bool fijada = false,
   }) {
     return ListTile(
       leading: Container(
-        width: 50,
-        height: 50,
+        width: 58,
+        height: 68,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: colorFondo,
@@ -299,15 +328,35 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
             : Image.asset(imagen, fit: BoxFit.cover),
       ),
       title: Text(
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         titulo,
         style: const TextStyle(
           color: Colors.white,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w400,
+          fontSize: 16,
         ),
       ),
-      subtitle: Text(
-        subtitulo,
-        style: const TextStyle(color: Colors.grey, fontSize: 13),
+      subtitle: Row(
+        children: [
+          if (fijada)
+            Transform.rotate(
+              angle: 0.6,
+              child: const Icon(
+                Icons.push_pin,
+                color: Color(0xFF1DB954),
+                size: 15,
+              ),
+            ),
+          Expanded(
+            child: Text(
+              subtitulo,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colors.grey, fontSize: 13),
+            ),
+          ),
+        ],
       ),
       onTap: () {},
     );
