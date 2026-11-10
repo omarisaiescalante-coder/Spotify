@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'Pantalla_Biblioteca.dart';
 import 'Pantalla_Principal.dart';
+import 'barra_navegacion.dart';
 import 'menu_perfil.dart';
 import 'pantalla_crear.dart';
 
@@ -96,6 +97,7 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       drawerScrimColor: sombraMenuPerfil,
       drawer: const MenuPerfil(),
       backgroundColor: Color.fromARGB(255, 25, 20, 20),
@@ -126,8 +128,16 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
       ),
       body: SafeArea(
         top: false,
+        bottom: false,
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+          padding: EdgeInsets.fromLTRB(
+            20,
+            18,
+            20,
+            kBottomNavigationBarHeight +
+                MediaQuery.viewPaddingOf(context).bottom +
+                24,
+          ),
           children: [
             TextField(
               controller: _controladorBusqueda,
@@ -260,14 +270,14 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xFF121212),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 1,
-
+      bottomNavigationBar: BarraNavegacion(
+        indiceActual: 1,
+        menuCrearAbierto: _menuCrearAbierto,
         onTap: (indice) {
+          if (_menuCrearAbierto) {
+            Navigator.of(context).pop();
+            if (indice == 3) return;
+          }
           if (indice == 0) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const PantallaPrincipal()),
@@ -283,28 +293,6 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
             });
           }
         },
-
-        items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Inicio',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Buscar',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.library_music_outlined),
-            label: 'Tu biblioteca',
-          ),
-          BottomNavigationBarItem(
-            icon: Opacity(
-              opacity: _menuCrearAbierto ? 0 : 1,
-              child: const Icon(Icons.add),
-            ),
-            label: _menuCrearAbierto ? '' : 'Más',
-          ),
-        ],
       ),
     );
   }

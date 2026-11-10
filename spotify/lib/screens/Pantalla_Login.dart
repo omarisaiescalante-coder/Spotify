@@ -69,8 +69,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
                           validator: (valor) {
-                            final correo = valor?.trim() ?? '';
-                            if (correo.toLowerCase() != 'spotify@gmail.com') {
+                            if (valor != 'spotify@gmail.com') {
                               return 'Correo incorrecto';
                             }
                             return null;
