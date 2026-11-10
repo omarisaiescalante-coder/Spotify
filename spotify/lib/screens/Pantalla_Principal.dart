@@ -201,6 +201,10 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
 
             // FUNCIONAMIENTO DE LOS BOTONES
             onTap: (indice) {
+              if (_menuCrearAbierto) {
+                Navigator.of(context).pop();
+                if (indice == 3) return;
+              }
               switch (indice) {
                 case 0:
                   // Ya estamos en Inicio.

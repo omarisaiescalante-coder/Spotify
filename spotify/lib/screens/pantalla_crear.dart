@@ -5,6 +5,29 @@ const Color _grisIcono = Color(0xFF404040);
 const Color _grisTexto = Color(0xFFB3B3B3);
 const Color _verdeSpotify = Color(0xFF1ED760);
 
+class _RutaMenuCrear extends RawDialogRoute<void> {
+  _RutaMenuCrear({required super.pageBuilder, required super.transitionBuilder})
+    : super(
+        barrierLabel: 'Cerrar menú Crear',
+        barrierColor: const Color(0xAD000000),
+        transitionDuration: const Duration(milliseconds: 230),
+      );
+
+  @override
+  Widget buildModalBarrier() {
+    final barrera = super.buildModalBarrier();
+    return Builder(
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom:
+              MediaQuery.paddingOf(context).bottom + kBottomNavigationBarHeight,
+        ),
+        child: barrera,
+      ),
+    );
+  }
+}
+
 // ABRIR MENÚ CREAR DE SPOTIFY
 Future<void> mostrarMenuCrear(
   BuildContext context,
@@ -12,170 +35,145 @@ Future<void> mostrarMenuCrear(
 ) async {
   cambiarEstado(true);
   try {
-    await showGeneralDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      barrierLabel: 'Cerrar menú Crear',
-      barrierColor: Colors.transparent,
-      transitionDuration: const Duration(milliseconds: 230),
-
-      pageBuilder: (dialogContext, animation, secondaryAnimation) {
-        return Material(
-          color: Colors.transparent,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                bottom:
-                    MediaQuery.paddingOf(dialogContext).bottom +
-                    kBottomNavigationBarHeight,
-                child: const IgnorePointer(
-                  child: ColoredBox(color: Color(0xAD000000)),
-                ),
-              ),
-              Positioned.fill(
-                child: SafeArea(
-                  child: LayoutBuilder(
-                    builder: (menuContext, constraints) {
-                      return Stack(
-                        children: [
-                          // MENÚ FLOTANTE
-                          Positioned(
-                            left: 8,
-                            right: 8,
-                            bottom: kBottomNavigationBarHeight + 12,
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxHeight: constraints.maxHeight * 0.60,
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: _fondoMenu,
-                                  borderRadius: BorderRadius.circular(16),
+    await Navigator.of(context).push(
+      _RutaMenuCrear(
+        pageBuilder: (dialogContext, animation, secondaryAnimation) {
+          return SafeArea(
+            child: LayoutBuilder(
+              builder: (menuContext, constraints) {
+                return Stack(
+                  children: [
+                    // MENÚ FLOTANTE
+                    Positioned(
+                      left: 8,
+                      right: 8,
+                      bottom: kBottomNavigationBarHeight + 12,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: constraints.maxHeight * 0.60,
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: _fondoMenu,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // PLAYLIST
+                                _opcionCrear(
+                                  icono: Icons.music_note,
+                                  titulo: 'Playlist',
+                                  descripcion:
+                                      'Crea una playlist con canciones o episodios',
+                                  onTap: () {
+                                    Navigator.pop(dialogContext);
+                                    _crearPlaylist(context);
+                                  },
                                 ),
-                                child: SingleChildScrollView(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 8,
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // PLAYLIST
-                                      _opcionCrear(
-                                        icono: Icons.music_note,
-                                        titulo: 'Playlist',
-                                        descripcion:
-                                            'Crea una playlist con canciones o episodios',
-                                        onTap: () {
-                                          Navigator.pop(dialogContext);
-                                          _crearPlaylist(context);
-                                        },
-                                      ),
 
-                                      // PLAYLIST COLABORATIVA
-                                      _opcionCrear(
-                                        icono: Icons.groups_rounded,
-                                        titulo: 'Playlist colaborativa',
-                                        descripcion:
-                                            'Crea una playlist con tus personas favoritas',
-                                        onTap: () {
-                                          Navigator.pop(dialogContext);
-                                          _crearPlaylist(
-                                            context,
-                                            colaborativa: true,
-                                          );
-                                        },
-                                      ),
-
-                                      // PLAYLIST MIXEADA
-                                      _opcionCrear(
-                                        icono: Icons.tune_rounded,
-                                        titulo: 'Playlist mixeada',
-                                        descripcion:
-                                            'Mezcla canciones con transiciones fluidas',
-                                        beta: true,
-                                        onTap: () {
-                                          Navigator.pop(dialogContext);
-                                          _mostrarAviso(
-                                            context,
-                                            'Playlist mixeada',
-                                          );
-                                        },
-                                      ),
-
-                                      // FUSIÓN
-                                      _opcionCrear(
-                                        icono: Icons.join_inner_rounded,
-                                        titulo: 'Fusión',
-                                        descripcion:
-                                            'Combina los gustos de tus personas favoritas en una playlist',
-                                        onTap: () {
-                                          Navigator.pop(dialogContext);
-                                          _mostrarAviso(context, 'Fusión');
-                                        },
-                                      ),
-
-                                      // JAM
-                                      _opcionCrear(
-                                        icono: Icons.sensors_rounded,
-                                        titulo: 'Jam',
-                                        descripcion:
-                                            'Escuchen en conjunto, estén donde estén',
-                                        onTap: () {
-                                          Navigator.pop(dialogContext);
-                                          _mostrarAviso(context, 'Jam');
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                // PLAYLIST COLABORATIVA
+                                _opcionCrear(
+                                  icono: Icons.groups_rounded,
+                                  titulo: 'Playlist colaborativa',
+                                  descripcion:
+                                      'Crea una playlist con tus personas favoritas',
+                                  onTap: () {
+                                    Navigator.pop(dialogContext);
+                                    _crearPlaylist(context, colaborativa: true);
+                                  },
                                 ),
+
+                                // PLAYLIST MIXEADA
+                                _opcionCrear(
+                                  icono: Icons.tune_rounded,
+                                  titulo: 'Playlist mixeada',
+                                  descripcion:
+                                      'Mezcla canciones con transiciones fluidas',
+                                  beta: true,
+                                  onTap: () {
+                                    Navigator.pop(dialogContext);
+                                    _mostrarAviso(context, 'Playlist mixeada');
+                                  },
+                                ),
+
+                                // FUSIÓN
+                                _opcionCrear(
+                                  icono: Icons.join_inner_rounded,
+                                  titulo: 'Fusión',
+                                  descripcion:
+                                      'Combina los gustos de tus personas favoritas en una playlist',
+                                  onTap: () {
+                                    Navigator.pop(dialogContext);
+                                    _mostrarAviso(context, 'Fusión');
+                                  },
+                                ),
+
+                                // JAM
+                                _opcionCrear(
+                                  icono: Icons.sensors_rounded,
+                                  titulo: 'Jam',
+                                  descripcion:
+                                      'Escuchen en conjunto, estén donde estén',
+                                  onTap: () {
+                                    Navigator.pop(dialogContext);
+                                    _mostrarAviso(context, 'Jam');
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 4,
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerRight,
+                        widthFactor: .25,
+                        child: Center(
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: SizedBox.square(
+                              dimension: 42,
+                              child: IconButton.filled(
+                                tooltip: 'Cerrar menú Crear',
+                                padding: EdgeInsets.zero,
+                                style: IconButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: Colors.black,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                onPressed: () => Navigator.pop(dialogContext),
+                                icon: const Icon(Icons.close, size: 24),
                               ),
                             ),
                           ),
-
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 4,
-                            child: FractionallySizedBox(
-                              alignment: Alignment.centerRight,
-                              widthFactor: .25,
-                              child: Center(
-                                child: SizedBox.square(
-                                  dimension: 42,
-                                  child: IconButton.filled(
-                                    tooltip: 'Cerrar menú Crear',
-                                    padding: EdgeInsets.zero,
-                                    style: IconButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      foregroundColor: Colors.black,
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                    onPressed: () =>
-                                        Navigator.pop(dialogContext),
-                                    icon: const Icon(Icons.close, size: 24),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: animation.drive(CurveTween(curve: Curves.easeOutCubic)),
-          child: child,
-        );
-      },
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          );
+        },
+        transitionBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation.drive(CurveTween(curve: Curves.easeOutCubic)),
+            child: child,
+          );
+        },
+      ),
     );
   } finally {
     if (context.mounted) cambiarEstado(false);

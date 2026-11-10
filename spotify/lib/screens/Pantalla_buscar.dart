@@ -268,6 +268,10 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
         currentIndex: 1,
 
         onTap: (indice) {
+          if (_menuCrearAbierto) {
+            Navigator.of(context).pop();
+            if (indice == 3) return;
+          }
           if (indice == 0) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const PantallaPrincipal()),
