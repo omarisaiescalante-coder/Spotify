@@ -224,8 +224,8 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
                               child: Transform.rotate(
                                 angle: 0.60, //ángulo
                                 child: SizedBox(
-                                  width: 115, //tamaño de la imagen
-                                  height: 115, //tamaño de la imagen
+                                  width: 105, //tamaño de la imagen
+                                  height: 105, //tamaño de la imagen
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(
                                       12,
