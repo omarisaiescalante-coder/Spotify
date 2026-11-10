@@ -163,9 +163,7 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
             tooltip: 'Crear',
             icon: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
-              ScaffoldMessenger.of(context)
-                ..removeCurrentSnackBar()
-                ..showSnackBar(const SnackBar(content: Text('Creas')));
+              ScaffoldMessenger.of(context);
             },
           ),
         ],

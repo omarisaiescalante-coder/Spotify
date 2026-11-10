@@ -56,11 +56,14 @@ const _albumes = <_Tarjeta>[
     descripcion: 'Romeo Santos',
   ),
   (
-    portada: 'inicio_verano.png',
-    titulo: 'Un Verano Sin Ti',
-    descripcion: 'Bad Bunny',
+    portada: 'Momentum.jpg',
+    titulo: 'Momentum',
+    descripcion: 'Redimi2',
   ),
-  (portada: 'thriller.jpg', titulo: 'Thriller', descripcion: 'Michael Jackson'),
+  (
+    portada: 'thriller.jpg',
+    titulo: 'Thriller',
+    descripcion: 'Michael Jackson'),
 ];
 
 enum _Filtro {
