@@ -44,7 +44,7 @@ const _mezclas = <_Tarjeta>[
   (
     portada: 'mujer_mariposa.png',
     titulo: 'Mix diario 3',
-    descripcion: 'Mujer Mariposa y más',
+    descripcion: 'Aurora y más',
   ),
 ];
 

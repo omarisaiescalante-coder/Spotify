@@ -212,7 +212,7 @@ class _PantallaBuscarState extends State<PantallaBuscar> {
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize:
-                                    20, //tamaño de las letras de las categorías
+                                    16, //tamaño de las letras de las categorías
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
