@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'Pantalla_Biblioteca.dart';
 import 'Pantalla_buscar.dart';
+import 'barra_navegacion.dart';
 import 'menu_perfil.dart';
 import 'pantalla_crear.dart';
 
@@ -180,81 +181,39 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
         },
 
         // BARRA DE NAVEGACION INFERIOR
-        bottomNavigationBar: DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.transparent, Colors.black, Colors.black],
-            ),
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            currentIndex: 0,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: _textoSecundario,
-            selectedFontSize: 11,
-            unselectedFontSize: 11,
-            iconSize: 26,
+        bottomNavigationBar: BarraNavegacion(
+          indiceActual: 0,
+          menuCrearAbierto: _menuCrearAbierto,
+          onTap: (indice) {
+            if (_menuCrearAbierto) {
+              Navigator.of(context).pop();
+              if (indice == 3) return;
+            }
+            switch (indice) {
+              case 0:
+                // Ya estamos en Inicio.
+                break;
 
-            // FUNCIONAMIENTO DE LOS BOTONES
-            onTap: (indice) {
-              if (_menuCrearAbierto) {
-                Navigator.of(context).pop();
-                if (indice == 3) return;
-              }
-              switch (indice) {
-                case 0:
-                  // Ya estamos en Inicio.
-                  break;
+              case 1:
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const PantallaBuscar()),
+                );
+                break;
 
-                case 1:
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => const PantallaBuscar()),
-                  );
-                  break;
+              case 2:
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const PantallaBiblioteca()),
+                );
+                break;
 
-                case 2:
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (_) => const PantallaBiblioteca(),
-                    ),
-                  );
-                  break;
-
-                case 3:
-                  // NUEVA FUNCIONALIDAD: CREAR
-                  mostrarMenuCrear(context, (abierto) {
-                    setState(() => _menuCrearAbierto = abierto);
-                  });
-                  break;
-              }
-            },
-
-            items: [
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled),
-                label: 'Inicio',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Buscar',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.library_music_outlined),
-                label: 'Tu biblioteca',
-              ),
-              BottomNavigationBarItem(
-                icon: Opacity(
-                  opacity: _menuCrearAbierto ? 0 : 1,
-                  child: const Icon(Icons.add),
-                ),
-                label: _menuCrearAbierto ? '' : 'Crear',
-              ),
-            ],
-          ),
+              case 3:
+                // NUEVA FUNCIONALIDAD: CREAR
+                mostrarMenuCrear(context, (abierto) {
+                  setState(() => _menuCrearAbierto = abierto);
+                });
+                break;
+            }
+          },
         ),
       ),
     );

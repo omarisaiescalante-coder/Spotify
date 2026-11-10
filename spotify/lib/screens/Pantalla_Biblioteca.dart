@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'Pantalla_buscar.dart';
 import 'Pantalla_Principal.dart';
+import 'barra_navegacion.dart';
 import 'menu_perfil.dart';
 import 'pantalla_crear.dart';
 
@@ -93,6 +94,7 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
     );
 
     return Scaffold(
+      extendBody: true,
       drawerScrimColor: sombraMenuPerfil,
       drawer: const MenuPerfil(),
       backgroundColor: const Color(0xFF121212),
@@ -207,13 +209,9 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xFF121212),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 2,
-
+      bottomNavigationBar: BarraNavegacion(
+        indiceActual: 2,
+        menuCrearAbierto: _menuCrearAbierto,
         onTap: (indice) {
           if (_menuCrearAbierto) {
             Navigator.of(context).pop();
@@ -234,28 +232,6 @@ class _PantallaBibliotecaState extends State<PantallaBiblioteca> {
             });
           }
         },
-
-        items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Inicio',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Buscar',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.library_music_outlined),
-            label: 'Tu biblioteca',
-          ),
-          BottomNavigationBarItem(
-            icon: Opacity(
-              opacity: _menuCrearAbierto ? 0 : 1,
-              child: const Icon(Icons.add),
-            ),
-            label: _menuCrearAbierto ? '' : 'Más',
-          ),
-        ],
       ),
     );
   }
