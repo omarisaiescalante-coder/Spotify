@@ -96,10 +96,7 @@ Future<void> mostrarMenuCrear(
                                   descripcion:
                                       'Mezcla canciones con transiciones fluidas',
                                   beta: true,
-                                  onTap: () {
-                                    Navigator.pop(dialogContext);
-                                    _mostrarAviso(context, 'Playlist mixeada');
-                                  },
+                                  onTap: () => Navigator.pop(dialogContext),
                                 ),
 
                                 // FUSIÓN
@@ -108,10 +105,7 @@ Future<void> mostrarMenuCrear(
                                   titulo: 'Fusión',
                                   descripcion:
                                       'Combina los gustos de tus personas favoritas en una playlist',
-                                  onTap: () {
-                                    Navigator.pop(dialogContext);
-                                    _mostrarAviso(context, 'Fusión');
-                                  },
+                                  onTap: () => Navigator.pop(dialogContext),
                                 ),
 
                                 // JAM
@@ -120,10 +114,7 @@ Future<void> mostrarMenuCrear(
                                   titulo: 'Jam',
                                   descripcion:
                                       'Escuchen en conjunto, estén donde estén',
-                                  onTap: () {
-                                    Navigator.pop(dialogContext);
-                                    _mostrarAviso(context, 'Jam');
-                                  },
+                                  onTap: () => Navigator.pop(dialogContext),
                                 ),
                               ],
                             ),
@@ -280,9 +271,9 @@ Future<void> _crearPlaylist(
 }) async {
   if (!context.mounted) return;
 
-  final controlador = TextEditingController();
+  var texto = '';
 
-  final nombre = await showDialog<String>(
+  await showDialog<void>(
     context: context,
     builder: (dialogContext) {
       return AlertDialog(
@@ -297,7 +288,7 @@ Future<void> _crearPlaylist(
         ),
 
         content: TextField(
-          controller: controlador,
+          onChanged: (valor) => texto = valor,
           autofocus: true,
           style: const TextStyle(color: Colors.white),
           decoration: const InputDecoration(
@@ -311,9 +302,8 @@ Future<void> _crearPlaylist(
             ),
           ),
           onSubmitted: (valor) {
-            final nombre = valor.trim();
-            if (nombre.isNotEmpty) {
-              Navigator.pop(dialogContext, nombre);
+            if (valor.trim().isNotEmpty) {
+              Navigator.pop(dialogContext);
             }
           },
         ),
@@ -335,10 +325,8 @@ Future<void> _crearPlaylist(
               foregroundColor: Colors.black,
             ),
             onPressed: () {
-              final texto = controlador.text.trim();
-
-              if (texto.isNotEmpty) {
-                Navigator.pop(dialogContext, texto);
+              if (texto.trim().isNotEmpty) {
+                Navigator.pop(dialogContext);
               }
             },
             child: const Text('Crear'),
@@ -346,33 +334,5 @@ Future<void> _crearPlaylist(
         ],
       );
     },
-  );
-
-  // LIBERAR RECURSOS DESPUÉS DEL DIÁLOGO
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    controlador.dispose();
-  });
-
-  if (!context.mounted) return;
-
-  if (nombre != null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Playlist "$nombre" creada'),
-        backgroundColor: const Color(0xFF303030),
-      ),
-    );
-  }
-}
-
-// MENSAJES DE LAS DEMÁS OPCIONES
-void _mostrarAviso(BuildContext context, String opcion) {
-  if (!context.mounted) return;
-
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('$opcion: funcionalidad en desarrollo'),
-      backgroundColor: const Color(0xFF303030),
-    ),
   );
 }
